@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <div class="grid place-content-center">
+      <h1 class="text-center">Astro 🚀 🤝 Partykit 🎈</h1>
+      <form
+        class="m-4 flex flex-col items-center space-y-4"
+        method="GET"
+        action="/chat"
+      >
+        <label class="flex gap-2 items-center"
+          ><span>User Name</span>
+          <input
+            name="username"
+            class="border border-gray-300 rounded-md p-2"
+            placeholder="username"
+          />
+        </label>
+        <label class="flex gap-2 items-center"
+          ><span>Room ID</span>
+          <input
+            name="roomId"
+            class="border border-gray-300 rounded-md p-2"
+            placeholder="Room ID"
+          />
+        </label>
+        <button
+          type="submit"
+          class="inline-flex items-center px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Join Room
+        </button>
+      </form>
+    </div>
+  </main>
+</Layout>

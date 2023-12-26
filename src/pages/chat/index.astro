@@ -1,0 +1,19 @@
+---
+import { Party } from "../../components/Party";
+import Layout from "../../layouts/Layout.astro";
+
+const username =
+  Astro.url.searchParams.get("username") ??
+  "astro-partykit-room" ??
+  "Anonymous";
+const roomId = Astro.url.searchParams.get("roomId") ?? "astro-partykit-room";
+---
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <div class="grid place-content-center">
+      <h1 class="text-center">Astro 🚀 🤝 Partykit 🎈</h1>
+      <Party username={username} roomId={roomId} client:load />
+    </div>
+  </main>
+</Layout>
