@@ -1,39 +1,24 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { Canvas } from "../components/Canvas";
+
+const PUBLIC_SNAP_API_TOKEN =
+  "eyJhbGciOiJIUzI1NiIsImtpZCI6IkNhbnZhc1MyU0hNQUNQcm9kIiwidHlwIjoiSldUIn0.eyJhdWQiOiJjYW52YXMtY2FudmFzYXBpIiwiaXNzIjoiY2FudmFzLXMyc3Rva2VuIiwibmJmIjoxNzAzNjExNDU5LCJzdWIiOiJlOTc1N2ViNS1lZDRmLTRiNTQtODAyYy00NjllZWRhZTU3MWR-U1RBR0lOR342MTkzZDE2ZC1hMDNhLTRkM2EtOTQ3Yy03YWIyMWU0OThmNjQifQ.q6HOKWqxvaU8hsxqn_VG6vscC5JWMK7do0iDYg9fagY";
+
+const PUBLIC_DEFAULT_GROUP_KEY = "d32f8017-3c4e-436f-9382-d3b1104f43a4";
 ---
 
 <Layout title="Welcome to Astro.">
   <main>
     <div class="grid place-content-center">
-      <h1 class="text-center">Astro 🚀 🤝 Partykit 🎈</h1>
-      <form
-        class="m-4 flex flex-col items-center space-y-4"
-        method="GET"
-        action="/chat"
-      >
-        <label class="flex gap-2 items-center"
-          ><span>User Name</span>
-          <input
-            name="username"
-            class="border border-gray-300 rounded-md p-2"
-            placeholder="username"
-          />
-        </label>
-        <label class="flex gap-2 items-center"
-          ><span>Room ID</span>
-          <input
-            name="roomId"
-            class="border border-gray-300 rounded-md p-2"
-            placeholder="Room ID"
-          />
-        </label>
-        <button
-          type="submit"
-          class="inline-flex items-center px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Join Room
-        </button>
-      </form>
+      <h1 class="text-center">
+        Astro 🚀 🤝 Partykit 🎈 🤝 Snapchat Camera Kit 📷
+      </h1>
+      <Canvas
+        client:load
+        apiToken={PUBLIC_SNAP_API_TOKEN}
+        defaultGroupKey={PUBLIC_DEFAULT_GROUP_KEY}
+      />
     </div>
   </main>
 </Layout>
