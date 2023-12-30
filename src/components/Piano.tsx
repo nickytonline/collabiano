@@ -8,20 +8,23 @@ import {
 import usePartySocket from "partysocket/react";
 import type { CollabianoMessage } from "../../party";
 
+type SoundTheme = "default-theme";
+type AudioFileKey = `/assets/sounds/${SoundTheme}/${NoteMapKey<Note>}.wav`;
+
 const isProd = import.meta.env.PROD;
 const host = isProd ? import.meta.env.PUBLIC_PARTYKIT_HOST : "localhost:1999";
-const sounds = new Map<NoteMapKey<Note>, HTMLAudioElement>();
+const sounds = new Map<AudioFileKey, HTMLAudioElement>();
 
-function playSound(note: Note) {
+function playSound(note: Note, theme: SoundTheme) {
   const key = note.replace("#", "_sharp_").toLowerCase() as NoteMapKey<Note>;
-  const soundFile = `/assets/sounds/${key}.wav`;
+  const soundFile = `/assets/sounds/${theme}/${key}.wav` satisfies AudioFileKey;
 
-  if (!sounds.has(key)) {
+  if (!sounds.has(soundFile)) {
     const audio = new Audio(soundFile);
-    sounds.set(key, audio);
+    sounds.set(soundFile, audio);
   }
 
-  const audio = sounds.get(key)!;
+  const audio = sounds.get(soundFile)!;
   audio.currentTime = 0;
   audio.play();
 }
@@ -32,6 +35,7 @@ interface PianoProps {
 }
 
 export const Piano = ({ username, roomId }: PianoProps) => {
+  const [theme, setTheme] = useState<SoundTheme>("default-theme");
   const [messages, setMessages] = useState<CollabianoMessage[]>([]);
   const socket = usePartySocket({
     host,
@@ -40,7 +44,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
       const message = JSON.parse(event.data) as CollabianoMessage;
 
       if (message.type === "note") {
-        playSound(message.message);
+        playSound(message.message, theme);
       }
 
       setMessages((messages) => [...messages, message]);
