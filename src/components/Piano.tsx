@@ -8,7 +8,8 @@ import {
 import usePartySocket from "partysocket/react";
 import type { CollabianoMessage } from "../../party";
 
-const host = import.meta.env.PUBLIC_PARTYKIT_HOST ?? "localhost:1999";
+const isProd = import.meta.env.PROD;
+const host = isProd ? import.meta.env.PUBLIC_PARTYKIT_HOST : "localhost:1999";
 const sounds = new Map<NoteMapKey<Note>, HTMLAudioElement>();
 
 function playSound(note: Note) {

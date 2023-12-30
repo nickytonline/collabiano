@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "partykit dev & astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && partykit deploy",
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky install"
