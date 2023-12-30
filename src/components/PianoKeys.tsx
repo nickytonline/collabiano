@@ -21,7 +21,7 @@ interface PianoKeyProps {
 export const WhitePianoKey = ({ note, playNote }: PianoKeyProps) => {
   return (
     <button
-      className="border border-black rounded-sm bg-color-white"
+      className="border border-black rounded-sm bg-color-white active:scale-95 hover:bg-gray-100"
       style={{ width: "3rem", height: "12rem" }}
       data-note={note}
       onClick={(event) => {
@@ -42,7 +42,7 @@ export const WhitePianoKey = ({ note, playNote }: PianoKeyProps) => {
 export const BlackPianoKey = ({ note, playNote }: PianoKeyProps) => {
   return (
     <button
-      className="black-key"
+      className="black-key active:scale-95 hover:bg-gray-100"
       data-note={note}
       onClick={(event) => {
         const { note } = event.currentTarget.dataset;
