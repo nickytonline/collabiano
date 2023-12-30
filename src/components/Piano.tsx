@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
-import { BlackPianoKey, WhitePianoKey, type Note } from "./PianoKeys";
+import {
+  BlackPianoKey,
+  WhitePianoKey,
+  type Note,
+  type NoteMapKey,
+} from "./PianoKeys";
 import usePartySocket from "partysocket/react";
-import type { NoteMessage } from "../../party";
+import type { CollabianoMessage } from "../../party";
 
 const host = import.meta.env.PUBLIC_PARTYKIT_HOST ?? "localhost:1999";
+const sounds = new Map<NoteMapKey<Note>, HTMLAudioElement>();
 
 function playSound(note: Note) {
   const audio = new Audio(`/sounds/${note.replace("#", "sharp")}.mp3`);
@@ -16,17 +22,18 @@ interface PianoProps {
 }
 
 export const Piano = ({ username, roomId }: PianoProps) => {
-  const [messages, setMessages] = useState<NoteMessage[]>([]);
+  const [messages, setMessages] = useState<CollabianoMessage[]>([]);
   const socket = usePartySocket({
     host,
     room: roomId,
     onMessage(event) {
-      const message = JSON.parse(event.data) as NoteMessage;
-      playSound(message.note);
+      const message = JSON.parse(event.data) as CollabianoMessage;
 
-      if (message.note) {
-        setMessages((messages) => [...messages, message]);
+      if (message.type === "note") {
+        playSound(message.message);
       }
+
+      setMessages((messages) => [...messages, message]);
     },
   });
 
@@ -37,7 +44,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
   }, [socket]);
 
   function playNote(note: Note) {
-    socket.send(JSON.stringify({ username, note }));
+    socket.send(JSON.stringify({ username, message: note, type: "note" }));
   }
 
   return (
@@ -69,7 +76,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
         {messages.map((message, index) => (
           <li key={index} className="flex gap-2">
             <span>{message.username}</span>
-            <span>{message.note}</span>
+            <span>{message.message}</span>
             <span>🎵</span>
           </li>
         ))}

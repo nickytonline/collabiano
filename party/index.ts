@@ -2,9 +2,18 @@ import type * as Party from "partykit/server";
 import type { Note } from "../src/components/PianoKeys";
 
 export interface NoteMessage {
+  type: "note";
   username: string;
-  note: Note;
+  message: Note;
 }
+
+export interface ChatMessage {
+  type: "chat";
+  username: string;
+  message: string;
+}
+
+export type CollabianoMessage = NoteMessage | ChatMessage;
 
 export default class Server implements Party.Server {
   // eslint-disable-next-line no-unused-vars
@@ -24,8 +33,9 @@ export default class Server implements Party.Server {
     conn.send(
       JSON.stringify({
         username: "server",
-        note: "C4",
-      } as NoteMessage)
+        message: "Welcome to Collabiano",
+        type: "chat",
+      } as CollabianoMessage)
     );
   }
 
