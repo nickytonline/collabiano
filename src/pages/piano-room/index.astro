@@ -1,0 +1,16 @@
+---
+import { Piano } from "../../components/Piano";
+import Layout from "../../layouts/Layout.astro";
+
+const username = Astro.url.searchParams.get("username") || "anonymous";
+const roomId = Astro.url.searchParams.get("roomId") || "default-piano-room";
+---
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <div class="grid place-content-center gap-4">
+      <h1 class="text-center">Piano Room 🎹</h1>
+      <Piano client:load username={username} roomId={roomId} />
+    </div>
+  </main>
+</Layout>
