@@ -5,6 +5,11 @@ import type { NoteMessage } from "../../party";
 
 const host = import.meta.env.PUBLIC_PARTYKIT_HOST ?? "localhost:1999";
 
+function playSound(note: Note) {
+  const audio = new Audio(`/sounds/${note.replace("#", "sharp")}.mp3`);
+  audio.play();
+}
+
 interface PianoProps {
   username: string;
   roomId: string;
@@ -17,6 +22,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
     room: roomId,
     onMessage(event) {
       const message = JSON.parse(event.data) as NoteMessage;
+      playSound(message.note);
 
       if (message.note) {
         setMessages((messages) => [...messages, message]);
@@ -59,7 +65,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
         </fieldset>
       </form>
       <h2>Notes played</h2>
-      <ul className="overflow-y-auto h-48 w-48">
+      <ul>
         {messages.map((message, index) => (
           <li key={index} className="flex gap-2">
             <span>{message.username}</span>
