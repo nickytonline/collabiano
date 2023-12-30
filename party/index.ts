@@ -1,13 +1,14 @@
 import type * as Party from "partykit/server";
+import type { Note } from "../src/components/PianoKeys";
 
-export interface ChatMessage {
-  user: string;
-  text: string;
+export interface NoteMessage {
+  username: string;
+  note: Note;
 }
 
 export default class Server implements Party.Server {
   // eslint-disable-next-line no-unused-vars
-  constructor(readonly party: Party.Party) {}
+  constructor(readonly party: Party.Party) { }
 
   onConnect(conn: Party.Connection, ctx: Party.ConnectionContext) {
     // A websocket just connected!
@@ -22,9 +23,9 @@ export default class Server implements Party.Server {
     // let's send a message to the connection
     conn.send(
       JSON.stringify({
-        user: "server",
-        text: "Let's get this party started",
-      } as ChatMessage)
+        username: "server",
+        note: "C4",
+      } as NoteMessage)
     );
   }
 

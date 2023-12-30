@@ -2,14 +2,14 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Welcome to Collabiano.">
   <main>
     <div class="grid place-content-center">
-      <h1 class="text-center">Astro 🚀 🤝 Partykit 🎈</h1>
+      <h1 class="text-center">Astro 🚀 🤝 Partykit 🎈 = &nbsp;Collabiano 🎹</h1>
       <form
         class="m-4 flex flex-col items-center space-y-4"
         method="GET"
-        action="/chat"
+        action="/piano-room"
       >
         <label class="flex gap-2 items-center"
           ><span>User Name</span>
@@ -17,14 +17,17 @@ import Layout from "../layouts/Layout.astro";
             name="username"
             class="border border-gray-300 rounded-md p-2"
             placeholder="username"
+            required
           />
         </label>
         <label class="flex gap-2 items-center"
           ><span>Room ID</span>
           <input
+            value="default-piano-room"
             name="roomId"
             class="border border-gray-300 rounded-md p-2"
             placeholder="Room ID"
+            required
           />
         </label>
         <button
