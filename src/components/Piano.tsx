@@ -5,8 +5,19 @@ import type { NoteMessage } from "../../party";
 
 const host = import.meta.env.PUBLIC_PARTYKIT_HOST ?? "localhost:1999";
 
+const sounds = new WeakMap<Note, HTMLAudioElement>();
+
 function playSound(note: Note) {
-  const audio = new Audio(`/sounds/${note.replace("#", "sharp")}.mp3`);
+  const soundFile = `/sounds/${note}.mp3`;
+
+  if (!sounds.has(note)) {
+    const audio = new Audio(soundFile);
+    sounds.set(note, audio);
+  }
+
+  const audio = sounds.get(note)!;
+  audio.currentTime = 0;
+  audio.play();
   audio.play();
 }
 
