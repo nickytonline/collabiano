@@ -64,9 +64,9 @@ export const Piano = ({ username, roomId }: PianoProps) => {
   return (
     <div className="grid place-content-center">
       <form onSubmit={(event) => event.preventDefault()}>
-        <fieldset className="piano">
+        <fieldset className="relative">
           <legend className="sr-only">Piano</legend>
-          <div className="flex gap-1">
+          <div className="flex gap-1 relative">
             <WhitePianoKey note="C4" playNote={playNote} />
             <WhitePianoKey note="D4" playNote={playNote} />
             <WhitePianoKey note="E4" playNote={playNote} />
@@ -74,14 +74,33 @@ export const Piano = ({ username, roomId }: PianoProps) => {
             <WhitePianoKey note="G4" playNote={playNote} />
             <WhitePianoKey note="A4" playNote={playNote} />
             <WhitePianoKey note="B4" playNote={playNote} />
-            <WhitePianoKey note="C5" playNote={playNote} />
           </div>
-          <div>
-            <BlackPianoKey note="C#4" playNote={playNote} />
-            <BlackPianoKey note="D#4" playNote={playNote} />
-            <BlackPianoKey note="F#4" playNote={playNote} />
-            <BlackPianoKey note="G#4" playNote={playNote} />
-            <BlackPianoKey note="A#4" playNote={playNote} />
+          <div className="absolute top-4">
+            <BlackPianoKey
+              note="C#4"
+              playNote={playNote}
+              leftPosition="left-[25px] md:left-[29px]"
+            />
+            <BlackPianoKey
+              note="D#4"
+              playNote={playNote}
+              leftPosition="left-[70px] md:left-[81px]"
+            />
+            <BlackPianoKey
+              note="F#4"
+              playNote={playNote}
+              leftPosition="left-[157px] md:left-[134px]"
+            />
+            <BlackPianoKey
+              note="G#4"
+              playNote={playNote}
+              leftPosition="left-[202px] md:left-[237px]"
+            />
+            <BlackPianoKey
+              note="A#4"
+              playNote={playNote}
+              leftPosition="left-[246px] md:left-[290px]"
+            />
           </div>
         </fieldset>
       </form>

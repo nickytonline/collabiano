@@ -22,10 +22,16 @@ interface PianoKeyProps {
   playNote: (note: Note) => void;
 }
 
+type LeftPosition = `left-[${number}px] md:left-[${number}px]`;
+
+interface BlackPianoKeyProps extends PianoKeyProps {
+  leftPosition: LeftPosition;
+}
+
 export const WhitePianoKey = ({ note, playNote }: PianoKeyProps) => {
   return (
     <button
-      className="border border-black rounded-sm bg-color-white active:scale-95 hover:bg-gray-100 w-10 md:w-12 h-32 md:h-56"
+      className="border border-black rounded-sm bg-color-white active:scale-95 hover:bg-gray-300 w-10 md:w-12 h-32 md:h-56"
       data-note={note}
       onClick={(event) => {
         const { note } = event.currentTarget.dataset;
@@ -42,10 +48,14 @@ export const WhitePianoKey = ({ note, playNote }: PianoKeyProps) => {
   );
 };
 
-export const BlackPianoKey = ({ note, playNote }: PianoKeyProps) => {
+export const BlackPianoKey = ({
+  note,
+  leftPosition,
+  playNote,
+}: BlackPianoKeyProps) => {
   return (
     <button
-      className="black-key active:scale-95 hover:bg-gray-100"
+      className={`border border-black rounded-sm bg-black active:scale-95 hover:bg-gray-300 w-8 md:w-10 h-20 md:h-36 absolute ${leftPosition}`}
       data-note={note}
       onClick={(event) => {
         const { note } = event.currentTarget.dataset;
