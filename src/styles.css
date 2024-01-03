@@ -34,10 +34,10 @@ h3 {
 a:not([class]) {
   @apply text-blue-500;
   @apply underline;
+}
 
-  &:hover {
-    @apply no-underline;
-  }
+a:not([class]):hover {
+  @apply no-underline;
 }
 
 button[data-note]:focus-visible {
