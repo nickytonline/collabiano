@@ -14,7 +14,7 @@ export type Note =
   | "A#4";
 
 export type NoteMapKey<T extends Note> = T extends `${infer L}#${infer R}`
-  ? `${Lowercase<L>}_sharp_${Lowercase<R>}`
+  ? `${Lowercase<L>}-sharp-${Lowercase<R>}`
   : Lowercase<T>;
 
 interface PianoKeyProps {

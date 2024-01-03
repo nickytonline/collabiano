@@ -20,7 +20,7 @@ const host = isProd ? import.meta.env.PUBLIC_PARTYKIT_HOST : "localhost:1999";
 const sounds = new Map<AudioFileKey, HTMLAudioElement>();
 
 function playSound(note: Note, theme: SoundTheme) {
-  const key = note.replace("#", "_sharp_").toLowerCase() as NoteMapKey<Note>;
+  const key = note.replace("#", "-sharp-").toLowerCase() as NoteMapKey<Note>;
   const soundFile = `/assets/sounds/${theme}/${key}.mp3` satisfies AudioFileKey;
 
   if (!sounds.has(soundFile)) {
