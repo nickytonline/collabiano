@@ -6,7 +6,7 @@ const username = Astro.url.searchParams.get("username") || "anonymous";
 const roomId = Astro.url.searchParams.get("roomId") || "default-piano-room";
 ---
 
-<Layout title=`Welcome to Piano Room ${roomId}`>
+<Layout title="Welcome to the Piano Room">
   <main>
     <div class="grid place-content-center gap-4">
       <h1 class="text-center">{roomId} 🎹</h1>
