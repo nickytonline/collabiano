@@ -31,7 +31,7 @@ interface BlackPianoKeyProps extends PianoKeyProps {
 export const WhitePianoKey = ({ note, playNote }: PianoKeyProps) => {
   return (
     <button
-      className="border border-black rounded-sm bg-color-white active:scale-95 hover:bg-gray-300 w-10 md:w-12 h-32 md:h-56"
+      className="flex flex-col border border-black rounded-sm bg-color-white active:scale-95 hover:bg-gray-300 w-10 md:w-12 h-32 md:h-56"
       data-note={note}
       onClick={(event) => {
         const { note } = event.currentTarget.dataset;
@@ -44,6 +44,7 @@ export const WhitePianoKey = ({ note, playNote }: PianoKeyProps) => {
       }}
     >
       <span className="sr-only">{`piano key ${note}`}</span>
+      <span className="mt-auto p-1">{note}</span>
     </button>
   );
 };
@@ -55,7 +56,7 @@ export const BlackPianoKey = ({
 }: BlackPianoKeyProps) => {
   return (
     <button
-      className={`border border-black rounded-sm bg-black active:scale-95 hover:bg-gray-300 w-8 md:w-10 h-20 md:h-36 absolute ${leftPosition}`}
+      className={`flex flex-col border border-black rounded-sm bg-black active:scale-95 hover:bg-gray-300 w-8 md:w-10 h-20 md:h-36 absolute ${leftPosition}`}
       data-note={note}
       onClick={(event) => {
         const { note } = event.currentTarget.dataset;
@@ -68,6 +69,7 @@ export const BlackPianoKey = ({
       }}
     >
       <span className="sr-only">{`piano key ${note}`}</span>
+      <span className="text-white mt-auto text-center p-1">{note}</span>
     </button>
   );
 };
