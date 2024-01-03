@@ -31,7 +31,7 @@ interface BlackPianoKeyProps extends PianoKeyProps {
 export const WhitePianoKey = ({ note, playNote }: PianoKeyProps) => {
   return (
     <button
-      className="flex flex-col border border-black rounded-sm bg-color-white active:scale-95 hover:bg-gray-300 w-10 md:w-12 h-32 md:h-56"
+      className="text-sm flex flex-col border border-black rounded-sm bg-color-white active:scale-95 hover:bg-gray-300 w-10 md:w-12 h-32 md:h-56"
       data-note={note}
       onClick={(event) => {
         const { note } = event.currentTarget.dataset;
