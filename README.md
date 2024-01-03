@@ -1,20 +1,20 @@
 # Collabiano
 
-This is a collaborative piano built with [Astro](https://astro.build) and [Partykit](https://partykit.io) using [React](https://reactjs.org/). 
+This is a collaborative piano built with [Astro](https://astro.build) and [Partykit](https://partykit.io) using [React](https://reactjs.org/).
 
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                   | Action                                                                              |
-| :------------------------ | :---------------------------------------------------------------------------------- |
-| `npm install`             | Installs dependencies                                                               |
-| `npm run dev`             | Starts local dev server at `localhost:4321` as well as partykit on `localhost:1999` |
-| `ntl dev`             | Starts Netlify integration along with local dev server at `localhost:8888` as well as partykit on `localhost:1999` |
-| `npm run build`           | Build your production site to `./dist/`                                             |
-| `npm run preview`         | Preview your build locally, before deploying                                        |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check`                                    |
-| `npm run astro -- --help` | Get help using the Astro CLI                                                        |
+| Command                   | Action                                                                                                             |
+| :------------------------ | :----------------------------------------------------------------------------------------------------------------- |
+| `npm install`             | Installs dependencies                                                                                              |
+| `npm run dev`             | Starts local dev server at `localhost:4321` as well as partykit on `localhost:1999`                                |
+| `ntl dev`                 | Starts Netlify integration along with local dev server at `localhost:8888` as well as partykit on `localhost:1999` |
+| `npm run build`           | Build your production site to `./dist/`                                                                            |
+| `npm run preview`         | Preview your build locally, before deploying                                                                       |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check`                                                                   |
+| `npm run astro -- --help` | Get help using the Astro CLI                                                                                       |
 
 If you plan to use Netlify, you need to install the [Netlify CLI](https://docs.netlify.com/cli/get-started/) to run `ntl dev`.
 
@@ -74,3 +74,7 @@ npx partykit deploy
 ```
 
 For more information see their [documentation](https://docs.partykit.io/).
+
+## Thanks
+
+Thanks to Astro, Partykit, React for making this possible along with [freesound.org](https://freesound.org) for the samples notes.
