@@ -97,7 +97,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
             <BlackPianoKey
               note="F#4"
               playNote={playNote}
-              leftPosition="left-[157px] md:left-[134px]"
+              leftPosition="left-[157px] md:left-[185px]"
             />
             <BlackPianoKey
               note="G#4"
