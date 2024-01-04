@@ -8,11 +8,14 @@ import {
 import usePartySocket from "partysocket/react";
 import type { CollabianoMessage } from "../../party";
 
-type SoundTheme = keyof typeof themes;
-type AudioFileKey = `/assets/sounds/${SoundTheme}/${NoteMapKey<Note>}.mp3`;
+type SoundThemeKey = keyof typeof themes | keyof typeof lockedThemes;
+type AudioFileKey = `/assets/sounds/${SoundThemeKey}/${NoteMapKey<Note>}.mp3`;
 
 const themes = {
   "default-theme": "default",
+};
+
+const lockedThemes = {
   "boop-theme": "boop",
 };
 
@@ -20,7 +23,7 @@ const isProd = import.meta.env.PROD;
 const host = isProd ? import.meta.env.PUBLIC_PARTYKIT_HOST : "localhost:1999";
 const sounds = new Map<AudioFileKey, HTMLAudioElement>();
 
-function playSound(note: Note, theme: SoundTheme) {
+function playSound(note: Note, theme: SoundThemeKey) {
   const key = note.replace("#", "-sharp-").toLowerCase() as NoteMapKey<Note>;
   const soundFile = `/assets/sounds/${theme}/${key}.mp3` satisfies AudioFileKey;
 
@@ -40,13 +43,19 @@ interface PianoProps {
 }
 
 export const Piano = ({ username, roomId }: PianoProps) => {
-  const [theme, setTheme] = useState<SoundTheme>("default-theme");
+  const availableThemes = themes;
+  const [theme, setTheme] = useState<SoundThemeKey>("default-theme");
   const [messages, setMessages] = useState<CollabianoMessage[]>([]);
   const socket = usePartySocket({
     host,
     room: roomId,
     onMessage(event) {
       const message = JSON.parse(event.data) as CollabianoMessage;
+
+      if (message.type === "powerup") {
+        // @ts-expect-error - We know this is a valid key, just need to sort the types out.
+        availableThemes[message.powerupId] = lockedThemes[message.powerupId];
+      }
 
       if (message.type === "note") {
         playSound(message.message, theme);
@@ -117,18 +126,19 @@ export const Piano = ({ username, roomId }: PianoProps) => {
           <select
             className="w-max border p-1"
             onChange={(event) => {
-              const theme = event.target.value as SoundTheme;
-              setTheme(theme as SoundTheme);
+              const theme = event.target.value as SoundThemeKey;
+              setTheme(theme as SoundThemeKey);
               socket.send(
                 JSON.stringify({
                   username,
-                  message: `I changed my theme to the ${themes[theme]} theme`,
+                  // @ts-expect-error - We know this is a valid key, just need to sort the types out.
+                  message: `I changed my theme to the ${availableThemes[theme]} theme`,
                   type: "message",
                 })
               );
             }}
           >
-            {Object.entries(themes).map(([key, value]) => (
+            {Object.entries(availableThemes).map(([key, value]) => (
               <option key={key} value={key}>
                 {value}
               </option>
@@ -137,10 +147,15 @@ export const Piano = ({ username, roomId }: PianoProps) => {
         </label>
       </form>
       <h2>Notes played</h2>
-      <ul>
+      <ul className="overflow-y-scroll h-48">
         {messages.map(({ username, message, type }, index) => (
-          <li key={index} className="flex gap-2">
-            <span>{username}</span>
+          <li
+            key={index}
+            className={`p-2 rounded flex gap-2 w-max ${
+              type === "powerup" ? "bg-black text-yellow-300" : ""
+            }`}
+          >
+            <span>{username}:</span>
             <span>{message}</span>
             {type === "note" ? <span>🎵</span> : null}
           </li>

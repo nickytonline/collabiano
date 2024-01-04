@@ -7,17 +7,24 @@ export interface NoteMessage {
   message: Note;
 }
 
-export interface ChatMessage {
-  type: "chat";
+export interface ServerMessage {
+  type: "server";
   username: string;
   message: string;
 }
 
-export type CollabianoMessage = NoteMessage | ChatMessage;
+export interface PowerUpMessage {
+  type: "powerup";
+  powerupId: string;
+  username: string;
+  message: string;
+}
+
+export type CollabianoMessage = NoteMessage | ServerMessage | PowerUpMessage;
 
 export default class Server implements Party.Server {
   // eslint-disable-next-line no-unused-vars
-  constructor(readonly party: Party.Party) { }
+  constructor(readonly party: Party.Party) {}
 
   onConnect(conn: Party.Connection, ctx: Party.ConnectionContext) {
     // A websocket just connected!
@@ -34,9 +41,21 @@ export default class Server implements Party.Server {
       JSON.stringify({
         username: "server",
         message: "Welcome to Collabiano",
-        type: "chat",
+        type: "server",
       } as CollabianoMessage)
     );
+
+    setTimeout(() => {
+      // let's send a message to the connection
+      conn.send(
+        JSON.stringify({
+          username: "server",
+          powerupId: "boop-theme",
+          message: "Boop theme unlocked!",
+          type: "powerup",
+        } as CollabianoMessage)
+      );
+    }, 20000);
   }
 
   onMessage(message: string, sender: Party.Connection) {
