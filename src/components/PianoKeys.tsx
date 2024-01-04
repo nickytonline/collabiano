@@ -56,7 +56,7 @@ export const BlackPianoKey = ({
 }: BlackPianoKeyProps) => {
   return (
     <button
-      className={`text-sm flex flex-col border border-black rounded-sm bg-black active:scale-95 hover:bg-gray-300 w-8 md:w-10 h-20 md:h-36 absolute ${leftPosition}`}
+      className={`text-xs md:text-sm flex flex-col border border-black rounded-sm bg-black active:scale-95 hover:bg-gray-300 w-8 md:w-10 h-20 md:p-1 md:h-36 absolute ${leftPosition}`}
       data-note={note}
       onClick={(event) => {
         const { note } = event.currentTarget.dataset;
@@ -69,7 +69,12 @@ export const BlackPianoKey = ({
       }}
     >
       <span className="sr-only">{`piano key ${note}`}</span>
-      <span className="text-white mt-auto text-center p-1">{note}</span>
+      <span
+        className="text-white mt-auto text-center p-1"
+        dangerouslySetInnerHTML={{
+          __html: note.replace(/(#)(\d)/, "$2<sup class='text-xs'>$1</sup>"),
+        }}
+      ></span>
     </button>
   );
 };
