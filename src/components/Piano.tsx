@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
-import {
-  BlackPianoKey,
-  WhitePianoKey,
-  type Note,
-  type NoteMapKey,
-} from "./PianoKeys";
+import { type Note, type NoteMapKey } from "./PianoKeys";
 import usePartySocket from "partysocket/react";
 import type { CollabianoMessage } from "../../party";
 import { KeyboardMap } from "./KeyboardMap";
 import { Messages } from "./Messages";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { PianoKeyboard } from "./PianoKeyboard";
 
 type SoundThemeKey = keyof typeof themes | keyof typeof lockedThemes;
 type AudioFileKey = `/assets/sounds/${SoundThemeKey}/${NoteMapKey<Note>}.mp3`;
@@ -105,43 +101,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
         >
           <fieldset className="relative">
             <legend className="sr-only">Piano</legend>
-            <div className="flex gap-1 relative">
-              <WhitePianoKey note="C4" playNote={playNote} />
-              <WhitePianoKey note="D4" playNote={playNote} />
-              <WhitePianoKey note="E4" playNote={playNote} />
-              <WhitePianoKey note="F4" playNote={playNote} />
-              <WhitePianoKey note="G4" playNote={playNote} />
-              <WhitePianoKey note="A4" playNote={playNote} />
-              <WhitePianoKey note="B4" playNote={playNote} />
-              <WhitePianoKey note="C5" playNote={playNote} />
-            </div>
-            <div className="absolute top-4">
-              <BlackPianoKey
-                note="C#4"
-                playNote={playNote}
-                leftPosition="left-[25px] md:left-[29px]"
-              />
-              <BlackPianoKey
-                note="D#4"
-                playNote={playNote}
-                leftPosition="left-[70px] md:left-[81px]"
-              />
-              <BlackPianoKey
-                note="F#4"
-                playNote={playNote}
-                leftPosition="left-[157px] md:left-[185px]"
-              />
-              <BlackPianoKey
-                note="G#4"
-                playNote={playNote}
-                leftPosition="left-[202px] md:left-[237px]"
-              />
-              <BlackPianoKey
-                note="A#4"
-                playNote={playNote}
-                leftPosition="left-[246px] md:left-[290px]"
-              />
-            </div>
+            <PianoKeyboard playNote={playNote} />
           </fieldset>
           <label className="flex gap-2 items-center">
             Theme
