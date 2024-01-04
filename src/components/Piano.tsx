@@ -13,6 +13,7 @@ type AudioFileKey = `/assets/sounds/${SoundTheme}/${NoteMapKey<Note>}.mp3`;
 
 const themes = {
   "default-theme": "default",
+  "boop-theme": "boop",
 };
 
 const isProd = import.meta.env.PROD;
