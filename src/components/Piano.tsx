@@ -180,7 +180,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
         }}
       />
       <h2>Notes played</h2>
-      <ul className="overflow-y-scroll h-48">
+      <ul className="overflow-y-scroll h-36">
         {messages.map(({ username, message, type }, index) => (
           <li
             key={index}
