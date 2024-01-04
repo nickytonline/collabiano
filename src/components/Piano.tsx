@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   BlackPianoKey,
   WhitePianoKey,
@@ -44,6 +44,7 @@ interface PianoProps {
 
 export const Piano = ({ username, roomId }: PianoProps) => {
   const availableThemes = themes;
+  const endOfListRef = useRef<HTMLLIElement>(null);
   const [theme, setTheme] = useState<SoundThemeKey>("default-theme");
   const [messages, setMessages] = useState<CollabianoMessage[]>([]);
   const socket = usePartySocket({
@@ -74,6 +75,8 @@ export const Piano = ({ username, roomId }: PianoProps) => {
   function playNote(note: Note) {
     socket.send(JSON.stringify({ username, message: note, type: "note" }));
   }
+
+  endOfListRef.current?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <div className="grid place-content-center gap-4">
@@ -160,6 +163,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
             {type === "note" ? <span>🎵</span> : null}
           </li>
         ))}
+        <li ref={endOfListRef} />
       </ul>
     </div>
   );
