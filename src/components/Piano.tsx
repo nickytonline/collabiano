@@ -112,10 +112,10 @@ export const Piano = ({ username, roomId }: PianoProps) => {
             />
           </div>
         </fieldset>
-        <label className="flex gap-2">
+        <label className="flex gap-2 items-center">
           Theme
           <select
-            className="w-max border"
+            className="w-max border p-1"
             onChange={(event) => {
               const theme = event.target.value as SoundTheme;
               setTheme(theme as SoundTheme);
