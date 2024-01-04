@@ -148,6 +148,9 @@ export const Piano = ({ username, roomId }: PianoProps) => {
             onChange={(event) => {
               const theme = event.target.value as SoundThemeKey;
               setTheme(theme as SoundThemeKey);
+              // clear cache so new theme can fill it
+              // this can be improved to keep all themes in memory
+              sounds.clear();
               socket.send(
                 JSON.stringify({
                   username,
