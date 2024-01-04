@@ -7,6 +7,7 @@ import {
 } from "./PianoKeys";
 import usePartySocket from "partysocket/react";
 import type { CollabianoMessage } from "../../party";
+import { KeyboardMap } from "./KeyboardMap";
 
 type SoundThemeKey = keyof typeof themes | keyof typeof lockedThemes;
 type AudioFileKey = `/assets/sounds/${SoundThemeKey}/${NoteMapKey<Note>}.mp3`;
@@ -41,6 +42,22 @@ interface PianoProps {
   username: string;
   roomId: string;
 }
+
+const keyboardMap: Record<string, Note> = {
+  a: "C4",
+  w: "C#4",
+  s: "D4",
+  e: "D#4",
+  d: "E4",
+  f: "F4",
+  t: "F#4",
+  g: "G4",
+  y: "G#4",
+  h: "A4",
+  u: "A#4",
+  j: "B4",
+  k: "C5",
+};
 
 export const Piano = ({ username, roomId }: PianoProps) => {
   const availableThemes = themes;
@@ -149,6 +166,16 @@ export const Piano = ({ username, roomId }: PianoProps) => {
           </select>
         </label>
       </form>
+      <KeyboardMap
+        keyMap={keyboardMap}
+        onKeyPress={(event: KeyboardEvent) => {
+          const note = keyboardMap[event.key];
+
+          if (note) {
+            playNote(note);
+          }
+        }}
+      />
       <h2>Notes played</h2>
       <ul className="overflow-y-scroll h-48">
         {messages.map(({ username, message, type }, index) => (
