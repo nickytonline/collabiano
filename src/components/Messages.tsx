@@ -10,8 +10,8 @@ export const Messages = ({ messages }: MessagesProps) => {
   endOfListRef.current?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <>
-      <h2>Messages</h2>
+    <details>
+      <summary className="text-2xl">Messages</summary>
       <ul className="overflow-y-scroll h-36">
         {messages.map(({ username, message, type }, index) => (
           <li
@@ -27,6 +27,6 @@ export const Messages = ({ messages }: MessagesProps) => {
         ))}
         <li ref={endOfListRef} />
       </ul>
-    </>
+    </details>
   );
 };
