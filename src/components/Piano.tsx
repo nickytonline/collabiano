@@ -9,6 +9,8 @@ import usePartySocket from "partysocket/react";
 import type { CollabianoMessage } from "../../party";
 import { KeyboardMap } from "./KeyboardMap";
 import { Messages } from "./Messages";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type SoundThemeKey = keyof typeof themes | keyof typeof lockedThemes;
 type AudioFileKey = `/assets/sounds/${SoundThemeKey}/${NoteMapKey<Note>}.mp3`;
@@ -73,6 +75,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
       if (message.type === "powerup") {
         // @ts-expect-error - We know this is a valid key, just need to sort the types out.
         availableThemes[message.powerupId] = lockedThemes[message.powerupId];
+        toast(message.message);
       }
 
       if (message.type === "note") {
@@ -94,90 +97,93 @@ export const Piano = ({ username, roomId }: PianoProps) => {
   }
 
   return (
-    <div className="grid place-content-center gap-4">
-      <form
-        className="flex flex-col gap-4"
-        onSubmit={(event) => event.preventDefault()}
-      >
-        <fieldset className="relative">
-          <legend className="sr-only">Piano</legend>
-          <div className="flex gap-1 relative">
-            <WhitePianoKey note="C4" playNote={playNote} />
-            <WhitePianoKey note="D4" playNote={playNote} />
-            <WhitePianoKey note="E4" playNote={playNote} />
-            <WhitePianoKey note="F4" playNote={playNote} />
-            <WhitePianoKey note="G4" playNote={playNote} />
-            <WhitePianoKey note="A4" playNote={playNote} />
-            <WhitePianoKey note="B4" playNote={playNote} />
-            <WhitePianoKey note="C5" playNote={playNote} />
-          </div>
-          <div className="absolute top-4">
-            <BlackPianoKey
-              note="C#4"
-              playNote={playNote}
-              leftPosition="left-[25px] md:left-[29px]"
-            />
-            <BlackPianoKey
-              note="D#4"
-              playNote={playNote}
-              leftPosition="left-[70px] md:left-[81px]"
-            />
-            <BlackPianoKey
-              note="F#4"
-              playNote={playNote}
-              leftPosition="left-[157px] md:left-[185px]"
-            />
-            <BlackPianoKey
-              note="G#4"
-              playNote={playNote}
-              leftPosition="left-[202px] md:left-[237px]"
-            />
-            <BlackPianoKey
-              note="A#4"
-              playNote={playNote}
-              leftPosition="left-[246px] md:left-[290px]"
-            />
-          </div>
-        </fieldset>
-        <label className="flex gap-2 items-center">
-          Theme
-          <select
-            className="w-max border p-1"
-            onChange={(event) => {
-              const theme = event.target.value as SoundThemeKey;
-              setTheme(theme as SoundThemeKey);
-              // clear cache so new theme can fill it
-              // this can be improved to keep all themes in memory
-              sounds.clear();
-              socket.send(
-                JSON.stringify({
-                  username,
-                  // @ts-expect-error - We know this is a valid key, just need to sort the types out.
-                  message: `I changed my theme to the ${availableThemes[theme]} theme`,
-                  type: "message",
-                })
-              );
-            }}
-          >
-            {Object.entries(availableThemes).map(([key, value]) => (
-              <option key={key} value={key}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </label>
-      </form>
-      <KeyboardMap
-        keyMap={keyboardMap}
-        onKeyPress={(event: KeyboardEvent) => {
-          const note = keyboardMap[event.key];
+    <>
+      <div className="grid place-content-center gap-4">
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={(event) => event.preventDefault()}
+        >
+          <fieldset className="relative">
+            <legend className="sr-only">Piano</legend>
+            <div className="flex gap-1 relative">
+              <WhitePianoKey note="C4" playNote={playNote} />
+              <WhitePianoKey note="D4" playNote={playNote} />
+              <WhitePianoKey note="E4" playNote={playNote} />
+              <WhitePianoKey note="F4" playNote={playNote} />
+              <WhitePianoKey note="G4" playNote={playNote} />
+              <WhitePianoKey note="A4" playNote={playNote} />
+              <WhitePianoKey note="B4" playNote={playNote} />
+              <WhitePianoKey note="C5" playNote={playNote} />
+            </div>
+            <div className="absolute top-4">
+              <BlackPianoKey
+                note="C#4"
+                playNote={playNote}
+                leftPosition="left-[25px] md:left-[29px]"
+              />
+              <BlackPianoKey
+                note="D#4"
+                playNote={playNote}
+                leftPosition="left-[70px] md:left-[81px]"
+              />
+              <BlackPianoKey
+                note="F#4"
+                playNote={playNote}
+                leftPosition="left-[157px] md:left-[185px]"
+              />
+              <BlackPianoKey
+                note="G#4"
+                playNote={playNote}
+                leftPosition="left-[202px] md:left-[237px]"
+              />
+              <BlackPianoKey
+                note="A#4"
+                playNote={playNote}
+                leftPosition="left-[246px] md:left-[290px]"
+              />
+            </div>
+          </fieldset>
+          <label className="flex gap-2 items-center">
+            Theme
+            <select
+              className="w-max border p-1"
+              onChange={(event) => {
+                const theme = event.target.value as SoundThemeKey;
+                setTheme(theme as SoundThemeKey);
+                // clear cache so new theme can fill it
+                // this can be improved to keep all themes in memory
+                sounds.clear();
+                socket.send(
+                  JSON.stringify({
+                    username,
+                    // @ts-expect-error - We know this is a valid key, just need to sort the types out.
+                    message: `I changed my theme to the ${availableThemes[theme]} theme`,
+                    type: "message",
+                  })
+                );
+              }}
+            >
+              {Object.entries(availableThemes).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </label>
+        </form>
+        <KeyboardMap
+          keyMap={keyboardMap}
+          onKeyPress={(event: KeyboardEvent) => {
+            const note = keyboardMap[event.key];
 
-          if (note) {
-            playNote(note);
-          }
-        }}
-      />
-      <Messages messages={messages} />
-    </div>
+            if (note) {
+              playNote(note);
+            }
+          }}
+        />
+        <Messages messages={messages} />
+      </div>
+      <ToastContainer />
+    </>
   );
 };
