@@ -44,18 +44,6 @@ export default class Server implements Party.Server {
         type: "server",
       } as CollabianoMessage)
     );
-
-    setTimeout(() => {
-      // let's send a message to the connection
-      conn.send(
-        JSON.stringify({
-          username: "server",
-          powerupId: "boop-theme",
-          message: "Boop theme unlocked!",
-          type: "powerup",
-        } as CollabianoMessage)
-      );
-    }, 20000);
   }
 
   onMessage(message: string, sender: Party.Connection) {

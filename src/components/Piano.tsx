@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { type Note, type NoteMapKey } from "./PianoKeys";
 import usePartySocket from "partysocket/react";
-import type { CollabianoMessage } from "../../party";
+import type { CollabianoMessage, PowerUpMessage } from "../../party";
 import { KeyboardMap } from "./KeyboardMap";
 import { Messages } from "./Messages";
 import { ToastContainer, toast } from "react-toastify";
@@ -59,6 +59,7 @@ const keyboardMap: Record<string, Note> = {
 };
 
 export const Piano = ({ username, roomId }: PianoProps) => {
+  const [boopUnlocked, setBoopUnlocked] = useState(false);
   const availableThemes = themes;
   const [theme, setTheme] = useState<SoundThemeKey>("default-theme");
   const [messages, setMessages] = useState<CollabianoMessage[]>([]);
@@ -90,6 +91,18 @@ export const Piano = ({ username, roomId }: PianoProps) => {
 
   function playNote(note: Note) {
     socket.send(JSON.stringify({ username, message: note, type: "note" }));
+  }
+
+  if (!boopUnlocked && messages.length > 30) {
+    setBoopUnlocked(true);
+    socket.send(
+      JSON.stringify({
+        username: "server",
+        powerupId: "boop-theme",
+        message: "Boop theme unlocked!",
+        type: "powerup",
+      } satisfies PowerUpMessage)
+    );
   }
 
   return (
