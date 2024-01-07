@@ -7,9 +7,64 @@ import { Messages } from "./Messages";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PianoKeyboard } from "./PianoKeyboard";
+import { AlbumArt } from "./AlbumArt";
 
 type SoundThemeKey = keyof typeof themes | keyof typeof lockedThemes;
 type AudioFileKey = `/assets/sounds/${SoundThemeKey}/${NoteMapKey<Note>}.mp3`;
+
+// an array of 30 animals with the first in the list being a corgi
+const animals = [
+  "Corgi",
+  "Hairless Cat",
+  "Lion",
+  "Tiger",
+  "Bear",
+  "Elephant",
+  "Giraffe",
+  "Penguin",
+  "Panda",
+  "Duck",
+  "Pig",
+  "Cow",
+  "Horse",
+  "Zebra",
+  "Rabbit",
+  "Frog",
+  "Chicken",
+  "Monkey",
+  "Owl",
+  "Goat",
+  "Sheep",
+  "Deer",
+  "Wolf",
+  "Fox",
+  "Mouse",
+  "Rat",
+  "Snake",
+  "Turtle",
+  "Fish",
+] as const;
+
+export type Animal = (typeof animals)[number];
+
+const musicGenres = [
+  "Pop",
+  "Rock",
+  "Hip-Hop",
+  "Jazz",
+  "Classical",
+  "Country",
+  "Electronic",
+  "R&B",
+  "Reggae",
+  "Blues",
+  "Metal",
+  "Folk",
+  "Indie",
+  "Punk",
+] as const;
+
+export type MusicGenre = (typeof musicGenres)[number];
 
 const themes = {
   "default-theme": "default",
@@ -22,6 +77,43 @@ const lockedThemes = {
 const isProd = import.meta.env.PROD;
 const host = isProd ? import.meta.env.PUBLIC_PARTYKIT_HOST : "localhost:1999";
 const sounds = new Map<AudioFileKey, HTMLAudioElement>();
+
+async function generateAlbumArt({
+  notes,
+  musicGenre,
+  animal,
+  maxRetries = 3,
+}: {
+  notes: Note[];
+  musicGenre: MusicGenre;
+  animal: Animal;
+  maxRetries?: number;
+}) {
+  let retryCount = 0;
+  while (retryCount < maxRetries) {
+    try {
+      const response = await fetch("/.netlify/functions/album-art", {
+        method: "POST",
+        body: JSON.stringify({ notes, musicGenre, animal }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to generate album art");
+      }
+
+      const { url } = await response.json();
+
+      return url;
+    } catch (error) {
+      retryCount++;
+      if (retryCount === maxRetries) {
+        throw error; // Throw the error if retries are exhausted
+      }
+      // You can optionally add a delay between retries here if needed
+      // For example: await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  }
+}
 
 function playSound(note: Note, theme: SoundThemeKey) {
   const key = note.replace("#", "-sharp-").toLowerCase() as NoteMapKey<Note>;
@@ -62,6 +154,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
   const [boopUnlocked, setBoopUnlocked] = useState(false);
   const availableThemes = themes;
   const [theme, setTheme] = useState<SoundThemeKey>("default-theme");
+  const [albumArtEnabled, setAlbumArtEnabled] = useState(false);
   const [messages, setMessages] = useState<CollabianoMessage[]>([]);
   const socket = usePartySocket({
     host,
@@ -70,8 +163,11 @@ export const Piano = ({ username, roomId }: PianoProps) => {
       const message = JSON.parse(event.data) as CollabianoMessage;
 
       if (message.type === "powerup") {
-        // @ts-expect-error - We know this is a valid key, just need to sort the types out.
-        availableThemes[message.powerupId] = lockedThemes[message.powerupId];
+        if (message.powerupId === "boop-theme") {
+          // @ts-expect-error - We know this is a valid key, just need to sort the types out.
+          availableThemes[message.powerupId] = lockedThemes[message.powerupId];
+        }
+
         toast(message.message);
       }
 
@@ -105,6 +201,24 @@ export const Piano = ({ username, roomId }: PianoProps) => {
     );
   }
 
+  if (!albumArtEnabled && messages.length > 60) {
+    setAlbumArtEnabled(true);
+
+    socket.send(
+      JSON.stringify({
+        username: "server",
+        powerupId: "album-art",
+        message: "Album art feature unlocked!",
+        type: "powerup",
+      } satisfies PowerUpMessage)
+    );
+  }
+
+  const lastTenNotes = messages
+    .filter((message) => message.type === "note")
+    .slice(-10)
+    .map((message) => message.message) as Note[];
+
   return (
     <>
       <div className="grid place-content-center gap-4">
@@ -112,7 +226,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
           className="flex flex-col gap-4"
           onSubmit={(event) => event.preventDefault()}
         >
-          <fieldset className="relative">
+          <fieldset className="relative self-center">
             <legend className="sr-only">Piano</legend>
             <PianoKeyboard playNote={playNote} />
           </fieldset>
@@ -154,6 +268,14 @@ export const Piano = ({ username, roomId }: PianoProps) => {
             }
           }}
         />
+        {albumArtEnabled ? (
+          <AlbumArt
+            generateAlbumArt={generateAlbumArt}
+            musicGenres={musicGenres}
+            notes={lastTenNotes}
+            animals={animals}
+          />
+        ) : null}
         <Messages messages={messages} />
       </div>
       <ToastContainer />

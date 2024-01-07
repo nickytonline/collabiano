@@ -17,7 +17,7 @@ export const KeyboardMap = ({ keyMap, onKeyPress }: KeyboardMapProps) => {
 
   return (
     <details>
-      <summary className="text-2xl">Keyboard map</summary>
+      <summary className="cursor-pointer text-2xl">Keyboard map</summary>
       <p className="py-2">
         Press the following keys to play the following notes
       </p>
