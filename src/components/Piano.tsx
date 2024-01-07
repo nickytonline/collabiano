@@ -66,6 +66,8 @@ const musicGenres = [
 
 export type MusicGenre = (typeof musicGenres)[number];
 
+type Theme = "boop-theme" | "default-theme";
+
 const themes = {
   "default-theme": "default",
 };
@@ -148,11 +150,11 @@ const keyboardMap: Record<string, Note> = {
   u: "A#4",
   j: "B4",
   k: "C5",
-};
+} as const;
 
 export const Piano = ({ username, roomId }: PianoProps) => {
   const [boopUnlocked, setBoopUnlocked] = useState(false);
-  const availableThemes = themes;
+  const availableThemes: Partial<Record<Theme, string>> = themes;
   const [theme, setTheme] = useState<SoundThemeKey>("default-theme");
   const [albumArtEnabled, setAlbumArtEnabled] = useState(false);
   const [messages, setMessages] = useState<CollabianoMessage[]>([]);
@@ -164,7 +166,6 @@ export const Piano = ({ username, roomId }: PianoProps) => {
 
       if (message.type === "powerup") {
         if (message.powerupId === "boop-theme") {
-          // @ts-expect-error - We know this is a valid key, just need to sort the types out.
           availableThemes[message.powerupId] = lockedThemes[message.powerupId];
         }
 
@@ -243,7 +244,6 @@ export const Piano = ({ username, roomId }: PianoProps) => {
                 socket.send(
                   JSON.stringify({
                     username,
-                    // @ts-expect-error - We know this is a valid key, just need to sort the types out.
                     message: `I changed my theme to the ${availableThemes[theme]} theme`,
                     type: "message",
                   })
