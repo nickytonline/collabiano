@@ -12,6 +12,60 @@ import { AlbumArt } from "./AlbumArt";
 type SoundThemeKey = keyof typeof themes | keyof typeof lockedThemes;
 type AudioFileKey = `/assets/sounds/${SoundThemeKey}/${NoteMapKey<Note>}.mp3`;
 
+// an array of 30 animals with the first in the list being a corgi
+const animals = [
+  "Corgi",
+  "Hairless Cat",
+  "Lion",
+  "Tiger",
+  "Bear",
+  "Elephant",
+  "Giraffe",
+  "Penguin",
+  "Panda",
+  "Duck",
+  "Pig",
+  "Cow",
+  "Horse",
+  "Zebra",
+  "Rabbit",
+  "Frog",
+  "Chicken",
+  "Monkey",
+  "Owl",
+  "Goat",
+  "Sheep",
+  "Deer",
+  "Wolf",
+  "Fox",
+  "Mouse",
+  "Rat",
+  "Snake",
+  "Turtle",
+  "Fish",
+] as const;
+
+export type Animal = (typeof animals)[number];
+
+const musicGenres = [
+  "Pop",
+  "Rock",
+  "Hip-Hop",
+  "Jazz",
+  "Classical",
+  "Country",
+  "Electronic",
+  "R&B",
+  "Reggae",
+  "Blues",
+  "Metal",
+  "Folk",
+  "Indie",
+  "Punk",
+] as const;
+
+export type MusicGenre = (typeof musicGenres)[number];
+
 const themes = {
   "default-theme": "default",
 };
@@ -24,13 +78,23 @@ const isProd = import.meta.env.PROD;
 const host = isProd ? import.meta.env.PUBLIC_PARTYKIT_HOST : "localhost:1999";
 const sounds = new Map<AudioFileKey, HTMLAudioElement>();
 
-async function generateAlbumArt(notes: Note[], maxRetries: number = 3) {
+async function generateAlbumArt({
+  notes,
+  musicGenre,
+  animal,
+  maxRetries = 3,
+}: {
+  notes: Note[];
+  musicGenre: MusicGenre;
+  animal: Animal;
+  maxRetries?: number;
+}) {
   let retryCount = 0;
   while (retryCount < maxRetries) {
     try {
       const response = await fetch("/.netlify/functions/album-art", {
         method: "POST",
-        body: JSON.stringify(notes),
+        body: JSON.stringify({ notes, musicGenre, animal }),
       });
 
       if (!response.ok) {
@@ -153,7 +217,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
   const lastTenNotes = messages
     .filter((message) => message.type === "note")
     .slice(-10)
-    .map((message) => message.message);
+    .map((message) => message.message) as Note[];
 
   return (
     <>
@@ -205,7 +269,12 @@ export const Piano = ({ username, roomId }: PianoProps) => {
           }}
         />
         {albumArtEnabled ? (
-          <AlbumArt generateAlbumArt={generateAlbumArt} notes={lastTenNotes} />
+          <AlbumArt
+            generateAlbumArt={generateAlbumArt}
+            musicGenres={musicGenres}
+            notes={lastTenNotes}
+            animals={animals}
+          />
         ) : null}
         <Messages messages={messages} />
       </div>
