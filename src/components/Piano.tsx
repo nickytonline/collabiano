@@ -24,6 +24,33 @@ const isProd = import.meta.env.PROD;
 const host = isProd ? import.meta.env.PUBLIC_PARTYKIT_HOST : "localhost:1999";
 const sounds = new Map<AudioFileKey, HTMLAudioElement>();
 
+async function generateAlbumArt(notes: Note[], maxRetries: number = 3) {
+  let retryCount = 0;
+  while (retryCount < maxRetries) {
+    try {
+      const response = await fetch("/.netlify/functions/album-art", {
+        method: "POST",
+        body: JSON.stringify(notes),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to generate album art");
+      }
+
+      const { url } = await response.json();
+
+      return url;
+    } catch (error) {
+      retryCount++;
+      if (retryCount === maxRetries) {
+        throw error; // Throw the error if retries are exhausted
+      }
+      // You can optionally add a delay between retries here if needed
+      // For example: await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  }
+}
+
 function playSound(note: Note, theme: SoundThemeKey) {
   const key = note.replace("#", "-sharp-").toLowerCase() as NoteMapKey<Note>;
   const soundFile = `/assets/sounds/${theme}/${key}.mp3` satisfies AudioFileKey;
@@ -123,6 +150,11 @@ export const Piano = ({ username, roomId }: PianoProps) => {
     );
   }
 
+  const lastTenNotes = messages
+    .filter((message) => message.type === "note")
+    .slice(-10)
+    .map((message) => message.message);
+
   return (
     <>
       <div className="grid place-content-center gap-4">
@@ -172,7 +204,9 @@ export const Piano = ({ username, roomId }: PianoProps) => {
             }
           }}
         />
-        {albumArtEnabled ? <AlbumArt /> : null}
+        {albumArtEnabled ? (
+          <AlbumArt generateAlbumArt={generateAlbumArt} notes={lastTenNotes} />
+        ) : null}
         <Messages messages={messages} />
       </div>
       <ToastContainer />

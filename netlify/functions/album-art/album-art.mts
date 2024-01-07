@@ -6,14 +6,12 @@ openai.apiKey = process.env.OPENAI_API_KEY!;
 // @ts-expect-error TODO: add types for event
 export const handler = async function (event /* context */) {
   if (event.httpMethod !== "POST") {
-    // return { statusCode: 405, body: "Method Not Allowed" };
+    return { statusCode: 405, body: "Method Not Allowed" };
   }
 
-  const userPrompt = ["C5", "D#4", "E2"];
+  const userPrompt = event.body;
 
-  const prompt = `Create an abstract vibrant image base on this array of strings, ${JSON.stringify(
-    userPrompt
-  )}. Include a corgi, a hairless cat or a gopher. No text or logos in the image.`;
+  const prompt = `Create an abstract vibrant based on this array of strings, ${userPrompt}. Include a corgi, a hairless cat or a gopher. No text or logos in the image. The image should have text no more than three words. Image dimensions must be 500 pixels wide and 500 pixels high`;
 
   try {
     const response = await openai.images.generate({
