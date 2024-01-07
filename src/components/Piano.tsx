@@ -7,6 +7,7 @@ import { Messages } from "./Messages";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PianoKeyboard } from "./PianoKeyboard";
+import { AlbumArt } from "./AlbumArt";
 
 type SoundThemeKey = keyof typeof themes | keyof typeof lockedThemes;
 type AudioFileKey = `/assets/sounds/${SoundThemeKey}/${NoteMapKey<Note>}.mp3`;
@@ -62,6 +63,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
   const [boopUnlocked, setBoopUnlocked] = useState(false);
   const availableThemes = themes;
   const [theme, setTheme] = useState<SoundThemeKey>("default-theme");
+  const [albumArtEnabled, setAlbumArtEnabled] = useState(false);
   const [messages, setMessages] = useState<CollabianoMessage[]>([]);
   const socket = usePartySocket({
     host,
@@ -70,8 +72,11 @@ export const Piano = ({ username, roomId }: PianoProps) => {
       const message = JSON.parse(event.data) as CollabianoMessage;
 
       if (message.type === "powerup") {
-        // @ts-expect-error - We know this is a valid key, just need to sort the types out.
-        availableThemes[message.powerupId] = lockedThemes[message.powerupId];
+        if (message.powerupId === "boop-theme") {
+          // @ts-expect-error - We know this is a valid key, just need to sort the types out.
+          availableThemes[message.powerupId] = lockedThemes[message.powerupId];
+        }
+
         toast(message.message);
       }
 
@@ -100,6 +105,19 @@ export const Piano = ({ username, roomId }: PianoProps) => {
         username: "server",
         powerupId: "boop-theme",
         message: "Boop theme unlocked!",
+        type: "powerup",
+      } satisfies PowerUpMessage)
+    );
+  }
+
+  if (!albumArtEnabled && messages.length > 60) {
+    setAlbumArtEnabled(true);
+
+    socket.send(
+      JSON.stringify({
+        username: "server",
+        powerupId: "album-art",
+        message: "Album art feature unlocked!",
         type: "powerup",
       } satisfies PowerUpMessage)
     );
@@ -154,6 +172,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
             }
           }}
         />
+        {albumArtEnabled ? <AlbumArt /> : null}
         <Messages messages={messages} />
       </div>
       <ToastContainer />
