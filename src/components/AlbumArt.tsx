@@ -5,12 +5,12 @@ import type { Animal, MusicGenre } from "./Piano";
 interface AlbumArtProps {
   generateAlbumArt: (options: {
     notes: Note[];
-    musicGenre: string;
+    musicGenre: MusicGenre;
     animal: Animal;
   }) => Promise<string>;
   notes: Note[];
-  musicGenres: MusicGenre[];
-  animals: Animal[];
+  musicGenres: Readonly<MusicGenre[]>;
+  animals: Readonly<Animal[]>;
 }
 
 export const AlbumArt = ({
@@ -27,7 +27,7 @@ export const AlbumArt = ({
 
   return (
     <details>
-      <summary className="cursor-pointer text-2xl">Album Art Creator</summary>
+      <summary className="cursor-pointer text-2xl">album art creator</summary>
       <p className="py-2">
         Album art is based off the last ten notes and the filters below
       </p>

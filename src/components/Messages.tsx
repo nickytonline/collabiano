@@ -11,7 +11,7 @@ export const Messages = ({ messages }: MessagesProps) => {
 
   return (
     <details>
-      <summary className="cursor-pointer text-2xl">Messages</summary>
+      <summary className="cursor-pointer text-2xl">messages</summary>
       <ul className="overflow-y-scroll h-36">
         {messages.map(({ username, message, type }, index) => (
           <li
