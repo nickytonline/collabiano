@@ -27,7 +27,7 @@ export const AlbumArt = ({
 
   return (
     <details>
-      <summary className="text-2xl">Album Art Creator</summary>
+      <summary className="cursor-pointer text-2xl">Album Art Creator</summary>
       <p className="py-2">
         Album art is based off the last ten notes and the filters below
       </p>
@@ -78,7 +78,9 @@ export const AlbumArt = ({
               setGeneratingAbumArt(false);
             }
           }}
-          className="inline-flex items-center px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-max"
+          className={`inline-flex items-center px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-max ${
+            generatingAlbumArt ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
           disabled={generatingAlbumArt}
         >
           Generate Album Art
