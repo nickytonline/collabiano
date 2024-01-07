@@ -19,6 +19,7 @@ export const AlbumArt = ({
   musicGenres,
   animals,
 }: AlbumArtProps) => {
+  const [hasImageError, setHasImageError] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | undefined>();
   const [generatingAlbumArt, setGeneratingAbumArt] = useState(false);
   const [musicGenre, setMusicGenre] = useState<MusicGenre>(musicGenres[0]);
@@ -28,8 +29,7 @@ export const AlbumArt = ({
     <details>
       <summary className="text-2xl">Album Art Creator</summary>
       <p className="py-2">
-        Generate album art. The art is based off of the last 10 notes that were
-        played by anyone.
+        Album art is based off the last ten notes and the filters below
       </p>
       <form className="grid gap-4">
         <label className="flex gap-2 items-center">
@@ -63,36 +63,55 @@ export const AlbumArt = ({
         <button
           onClick={async (event) => {
             event.preventDefault();
+            setHasImageError(false);
             setImageUrl(undefined);
             setGeneratingAbumArt(true);
-            setImageUrl(await generateAlbumArt({ notes, musicGenre, animal }));
+            let imageUrl: string | undefined;
+
+            try {
+              imageUrl = await generateAlbumArt({ notes, musicGenre, animal });
+              setImageUrl(imageUrl);
+            } catch (error) {
+              setHasImageError(true);
+              console.error(error);
+            } finally {
+              setGeneratingAbumArt(false);
+            }
           }}
           className="inline-flex items-center px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-max"
+          disabled={generatingAlbumArt}
         >
           Generate Album Art
         </button>
-        {imageUrl ? (
-          <a
-            href={imageUrl}
-            download={new URL(imageUrl).pathname.split("/")[-1]}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src={imageUrl}
-              alt={`album art generated from these notes played, ${notes.join(
-                ", "
-              )}`}
-              width="300"
-              className="aspect-w-1 aspect-h-1 rounded-md"
+        <div aria-live="assertive">
+          {hasImageError ? (
+            <p className="text-red-500">
+              There was an error generating the album art. Please try again.
+            </p>
+          ) : null}
+          {imageUrl ? (
+            <a
+              href={imageUrl}
+              download={new URL(imageUrl).pathname.split("/")[-1]}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={imageUrl}
+                alt={`album art generated from these notes played, ${notes.join(
+                  ", "
+                )}`}
+                width="300"
+                className="aspect-w-1 aspect-h-1 rounded-md"
+              />
+            </a>
+          ) : generatingAlbumArt ? (
+            <div
+              className="loading rounded-md aspect-square"
+              style={{ width: "300px" }}
             />
-          </a>
-        ) : generatingAlbumArt ? (
-          <div
-            className="loading rounded-md"
-            style={{ width: "300px", aspectRatio: "1/1" }}
-          />
-        ) : null}
+          ) : null}
+        </div>
       </form>
     </details>
   );

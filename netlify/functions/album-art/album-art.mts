@@ -86,7 +86,7 @@ export const handler = async function (event /* context */) {
 
   const prompt = `Create a ${musicGenre} music genre album cover based on this array of strings, ${JSON.stringify(
     notes
-  )}. The image has a ${animal} in it. ${extraDetails}.`;
+  )}. The image has a ${animal} in it. ${extraDetails}. The image should be inverted.`;
 
   console.log("prompt", prompt);
 

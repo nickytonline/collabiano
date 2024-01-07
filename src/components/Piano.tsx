@@ -226,7 +226,7 @@ export const Piano = ({ username, roomId }: PianoProps) => {
           className="flex flex-col gap-4"
           onSubmit={(event) => event.preventDefault()}
         >
-          <fieldset className="relative">
+          <fieldset className="relative self-center">
             <legend className="sr-only">Piano</legend>
             <PianoKeyboard playNote={playNote} />
           </fieldset>
