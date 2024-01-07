@@ -1,8 +1,8 @@
 [dev]
-command = "npm run dev"
+command = "bun run dev"
 
 [build]
-command = "npm run build"
+command = "bun run build"
 functions = "netlify/functions"
 publish = "dist"
 
