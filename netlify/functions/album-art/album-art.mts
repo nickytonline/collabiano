@@ -59,7 +59,7 @@ export const handler: Handler = async function (event) {
 
   const prompt = `Create a ${musicGenre} music genre album cover based on this array of strings, ${JSON.stringify(
     notes
-  )}. The image has a ${animal} in it. ${extraDetails}.`;
+  )}. The image must have an ${animal} in it. ${extraDetails}.`;
 
   console.log("prompt", prompt);
 
