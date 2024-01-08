@@ -32,34 +32,36 @@ export const AlbumArt = ({
         Album art is based off the last ten notes and the filters below
       </p>
       <form className="grid gap-4">
-        <label className="flex gap-2 items-center">
-          Genre
-          <select
-            className="w-max border p-1"
-            onChange={(event) => {
-              event.preventDefault();
-              setMusicGenre(event.target.value as MusicGenre);
-            }}
-          >
-            {musicGenres.map((genre: string) => (
-              <option key={genre}>{genre}</option>
-            ))}
-          </select>
-        </label>
-        <label className="flex gap-2 items-center">
-          Animal
-          <select
-            className="w-max border p-1"
-            onChange={(event) => {
-              event.preventDefault();
-              setAnimal(event.target.value as Animal);
-            }}
-          >
-            {animals.map((animal: string) => (
-              <option key={animal}>{animal}</option>
-            ))}
-          </select>
-        </label>
+        <div className="flex gap-4 flex-wrap">
+          <label className="flex gap-2 items-center">
+            Genre
+            <select
+              className="w-max border p-1"
+              onChange={(event) => {
+                event.preventDefault();
+                setMusicGenre(event.target.value as MusicGenre);
+              }}
+            >
+              {musicGenres.map((genre: string) => (
+                <option key={genre}>{genre}</option>
+              ))}
+            </select>
+          </label>
+          <label className="flex gap-2 items-center">
+            Animal
+            <select
+              className="w-max border p-1"
+              onChange={(event) => {
+                event.preventDefault();
+                setAnimal(event.target.value as Animal);
+              }}
+            >
+              {animals.map((animal: string) => (
+                <option key={animal}>{animal}</option>
+              ))}
+            </select>
+          </label>
+        </div>
         <button
           onClick={async (event) => {
             event.preventDefault();
