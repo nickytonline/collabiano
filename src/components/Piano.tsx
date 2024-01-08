@@ -122,10 +122,8 @@ async function generateAlbumArt({
     } catch (error) {
       retryCount++;
       if (retryCount === maxRetries) {
-        throw error; // Throw the error if retries are exhausted
+        throw error;
       }
-      // You can optionally add a delay between retries here if needed
-      // For example: await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
 }
@@ -169,7 +167,6 @@ export const Piano = ({ username, roomId }: PianoProps) => {
   const [boopUnlocked, setBoopUnlocked] = useState(false);
   const availableThemes: Partial<Record<Theme, string>> = themes;
   const [theme, setTheme] = useState<SoundThemeKey>("default-theme");
-  const [albumArtEnabled, setAlbumArtEnabled] = useState(false);
   const [messages, setMessages] = useState<CollabianoMessage[]>([]);
   const socket = usePartySocket({
     host,
@@ -210,19 +207,6 @@ export const Piano = ({ username, roomId }: PianoProps) => {
         username: "server",
         powerupId: "boop-theme",
         message: "Boop theme unlocked!",
-        type: "powerup",
-      } satisfies PowerUpMessage)
-    );
-  }
-
-  if (!albumArtEnabled && messages.length > 60) {
-    setAlbumArtEnabled(true);
-
-    socket.send(
-      JSON.stringify({
-        username: "server",
-        powerupId: "album-art",
-        message: "Album art feature unlocked!",
         type: "powerup",
       } satisfies PowerUpMessage)
     );
@@ -281,14 +265,12 @@ export const Piano = ({ username, roomId }: PianoProps) => {
             }
           }}
         />
-        {albumArtEnabled ? (
-          <AlbumArt
-            generateAlbumArt={generateAlbumArt}
-            musicGenres={musicGenres}
-            notes={lastTenNotes}
-            animals={animals}
-          />
-        ) : null}
+        <AlbumArt
+          generateAlbumArt={generateAlbumArt}
+          musicGenres={musicGenres}
+          notes={lastTenNotes}
+          animals={animals}
+        />
         <Messages messages={messages} />
       </div>
       <ToastContainer />
