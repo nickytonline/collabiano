@@ -28,5 +28,3 @@ pnpm-debug.log*
 # Partykit
 .partykit
 
-# Using bun so ignore
-package-lock.json

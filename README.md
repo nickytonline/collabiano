@@ -8,15 +8,15 @@ All commands are run from the root of the project, from a terminal:
 
 | Command                   | Action                                                                                                             |
 | :------------------------ | :----------------------------------------------------------------------------------------------------------------- |
-| `bun install`             | Installs dependencies                                                                                              |
-| `bun run dev`             | Starts local dev server at `localhost:4321` as well as partykit on `localhost:1999`                                |
+| `npm install`             | Installs dependencies                                                                                              |
+| `npm run dev`             | Starts local dev server at `localhost:4321` as well as partykit on `localhost:1999`                                |
 | `ntl dev`                 | Starts Netlify integration along with local dev server at `localhost:8888` as well as partykit on `localhost:1999` |
-| `bun run build`           | Build your production site to `./dist/`                                                                            |
-| `bun run preview`         | Preview your build locally, before deploying                                                                       |
-| `bun run astro ...`       | Run CLI commands like `astro add`, `astro check`                                                                   |
-| `bun run astro -- --help` | Get help using the Astro CLI                                                                                       |
+| `npm run build`           | Build your production site to `./dist/`                                                                            |
+| `npm run preview`         | Preview your build locally, before deploying                                                                       |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check`                                                                   |
+| `npm run astro -- --help` | Get help using the Astro CLI                                                                                       |
 
-If you plan to use Netlify, you need to install the [Netlify CLI](https://docs.netlify.com/cli/get-started/) to run `ntl dev` as well as [bun](https://bun.sh/) which the netlify dev and build commands use.
+If you plan to use Netlify, you need to install the [Netlify CLI](https://docs.netlify.com/cli/get-started/) to run `ntl dev`.
 
 ## 👀 Want to learn more about Astro?
 
