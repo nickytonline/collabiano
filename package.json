@@ -18,7 +18,7 @@
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.18",
     "astro": "^4.6.3",
-    "openai": "^4.45.0",
+    "openai": "^4.47.3",
     "partysocket": "1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
