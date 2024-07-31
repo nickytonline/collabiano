@@ -13,7 +13,7 @@
   "dependencies": {
     "@astrojs/check": "^0.7.0",
     "@astrojs/netlify": "^5.3.5",
-    "@astrojs/react": "^3.0.8",
+    "@astrojs/react": "^3.6.1",
     "@astrojs/tailwind": "^5.1.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.2.18",
