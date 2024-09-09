@@ -2,6 +2,10 @@
 
 This is a collaborative piano built with [Astro](https://astro.build) and [Partykit](https://partykit.io) using [React](https://reactjs.org/).
 
+The project was a challenge to build a real-time, multiplayer web app for [Jason Lengstorf](https://www.youtube.com/@learnwithjason)'s 4 Web Devs, 1 App Idea.
+
+[![4 Web Devs, 1 App Idea: Build a real-time, multiplayer web app](yt-video-thumbnail.jpg)](https://www.youtube.com/watch?v=DbaBeLDU-oY)
+
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:
