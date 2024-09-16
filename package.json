@@ -17,7 +17,7 @@
     "@astrojs/tailwind": "^5.1.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.2.18",
-    "astro": "^4.15.4",
+    "astro": "^4.15.6",
     "openai": "^4.57.0",
     "partysocket": "1.0.2",
     "react": "^18.3.1",
