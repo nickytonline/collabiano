@@ -1,12 +1,8 @@
 /* eslint-env node */
 module.exports = {
-  extends: [
-    "eslint:recommended",
-    "plugin:astro/recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-  ],
+  extends: "eslint:recommended",
+  plugins: ["astro", "jsx-a11y", "@typescript-eslint", "prettier"],
+  ignorePatterns: ["package.json", "package-lock.json"],
   parser: "@typescript-eslint/parser",
   overrides: [
     {
