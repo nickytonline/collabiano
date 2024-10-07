@@ -14,8 +14,8 @@
     "@astrojs/check": "^0.9.3",
     "@astrojs/netlify": "^5.5.1",
     "@astrojs/react": "^3.6.2",
-    "@astrojs/tailwind": "^5.1.0",
-    "@types/react": "^18.3.5",
+    "@astrojs/tailwind": "^5.1.1",
+    "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "astro": "^4.15.9",
     "openai": "^4.61.0",
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.7.0",
-    "@typescript-eslint/parser": "^8.6.0",
+    "@typescript-eslint/parser": "^8.8.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-astro": "^1.2.4",
@@ -38,7 +38,7 @@
     "partykit": "0.0.111",
     "prettier": "3.3.3",
     "prettier-plugin-astro": "^0.14.1",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,astro,mjs,mts,json,cjs}": "eslint --cache --fix",
